@@ -4,6 +4,7 @@ import liquibase.database.Database;
 import liquibase.exception.DatabaseException;
 import liquibase.structure.core.Column;
 
+import java.io.Reader;
 import java.sql.*;
 import java.util.Collection;
 
@@ -88,6 +89,20 @@ public abstract class JdbcUtils {
         }
         if (obj instanceof Blob) {
             obj = rs.getBytes(index);
+        } else if (obj instanceof Clob && obj.getClass().getName().equals("org.apache.derby.client.am.ClientClob")) {
+            StringBuilder buffer;
+            try (Reader initialReader = ((Clob) obj).getCharacterStream()) {
+                char[] arr = new char[8 * 1024];
+                buffer = new StringBuilder();
+                int numCharsRead;
+
+                while ((numCharsRead = initialReader.read(arr, 0, arr.length)) != -1){
+                    buffer.append(arr, 0, numCharsRead);
+                }
+                obj = buffer.toString();
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to read clob column (derby)", e);
+            }
         } else if (obj instanceof Clob) {
             obj = rs.getString(index);
         } else if ((obj != null) && obj.getClass().getName().startsWith("oracle.sql.TIMESTAMP")) {
