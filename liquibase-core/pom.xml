@@ -6,12 +6,26 @@
     <parent>
         <groupId>org.liquibase</groupId>
         <artifactId>liquibase-base</artifactId>
-        <version>${liquibase.version}</version>
+        <version>4.2.2-adito</version>
         <relativePath>../base.pom.xml</relativePath>
     </parent>
 
     <artifactId>liquibase-core</artifactId>
     <packaging>jar</packaging>
+
+    <distributionManagement>
+        <repository>
+            <id>adito.m2</id>
+            <name>releases</name>
+            <url>${repository.releases}</url>
+        </repository>
+        <snapshotRepository>
+            <id>adito.m2</id>
+            <name>snapshots</name>
+            <url>${repository.snapshots}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
