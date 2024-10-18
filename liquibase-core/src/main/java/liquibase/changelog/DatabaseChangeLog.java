@@ -570,6 +570,11 @@ public class DatabaseChangeLog implements Comparable<DatabaseChangeLog>, Conditi
             } else {
                 fileName = FilenameUtils.getFullPath(relativeBaseFileName) + fileName;
             }
+
+            // ADITO: normalize the file path to transform the path from x/foo/../bar to x/bar
+            // the normalize is there in newer versions: https://github.com/liquibase/liquibase/blob/master/liquibase-standard/src/main/java/liquibase/changelog/DatabaseChangeLog.java#L1011
+            fileName = Optional.ofNullable(FilenameUtils.normalizeNoEndSeparator(fileName)).orElse(fileName);
+            // End ADITO
         }
 
         fileName = fileName.replaceFirst("classpath:", "");

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.liquibase</groupId>
         <artifactId>liquibase-base</artifactId>
-        <version>4.2.2-adito</version>
+        <version>4.2.2-adito2</version>
         <relativePath>../base.pom.xml</relativePath>
     </parent>
 
